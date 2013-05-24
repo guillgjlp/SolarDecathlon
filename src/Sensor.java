@@ -8,16 +8,19 @@ public class Sensor implements Observable {
     private ArrayList<Integer> tabTemp;
     private ArrayList<Integer> tabHum;
     private ArrayList<Integer> tabCov;
+    private int sizeArrayList;
+    private int currentPosition;
           
     public Sensor()        
     {  
-
-    tabObservator = new ArrayList<Observator>();       
-    tabTemp = new ArrayList<Integer>();
-    tabHum = new ArrayList<Integer>();
-    tabCov = new ArrayList<Integer>();
-    tabDate = new ArrayList<Date>();
-    
+    	sizeArrayList=1000;	
+    	currentPosition=-1; //Position de la derniere valeur ajoutee
+    	tabObservator = new ArrayList<Observator>();       
+    	tabTemp = new ArrayList<Integer>();
+    	tabHum = new ArrayList<Integer>();
+    	tabCov = new ArrayList<Integer>();
+    	tabDate = new ArrayList<Date>();
+    	
     }          
     
     public void addObservator(Observator o)      
@@ -40,12 +43,21 @@ public class Sensor implements Observable {
     } 
     public void addValueSensor(int temp, int hum, int cov)
     {
+    	
+    	if(currentPosition>sizeArrayList)
+    	{
+    		currentPosition=0;
+    	}
+    	else
+    	{
+    		currentPosition++;
+    	}
     	Date date = new Date();
     	SimpleDateFormat dateLongue = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    	tabTemp.add(temp);
-    	tabHum.add(hum);
-    	tabCov.add(cov);
-    	tabDate.add(date);
+    	tabTemp.add(currentPosition,temp);
+    	tabHum.add(currentPosition,hum);
+    	tabCov.add(currentPosition,cov);
+    	tabDate.add(currentPosition,date);
     	//tabDate.add(dateLongue.format(date));
     	System.out.println(dateLongue.format(date)+" "+temp+" "+hum+" "+cov);
     }
